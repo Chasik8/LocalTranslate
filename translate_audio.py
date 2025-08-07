@@ -53,8 +53,12 @@ def synthesize_speech_silero(text_to_synthesize, output_audio_path, speaker='xen
     """Synthesizes speech from text using Silero models and saves it as a WAV file."""
     try:
         print("\n3. Starting speech synthesis process...")
-        device = torch.device('cpu')
-        torch.set_num_threads(4)
+        if torch.cuda.is_available():
+            device = torch.device('cuda:0')
+            print('cuda')
+        else:
+            device = torch.device('cpu')
+            torch.set_num_threads(4)
 
         model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
                                   model='silero_tts',
@@ -127,7 +131,7 @@ if __name__ == "__main__":
     output_txt_path = output_txt_path_folder_txt + r"\2408.05446v1.txt"
     output_txt_path_folder_audio = r"D:\Project\ISP\CountNN\literatur\audio"
     output_audio_path = output_txt_path_folder_audio + r"\2408.05446v1.wav"
-    silero_speaker = 'xenia'
+    silero_speaker = 'aidar'  # aidar  xenia
 
     # --- EXECUTION ---
     if not os.path.exists(input_pdf_path):
